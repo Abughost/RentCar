@@ -1,10 +1,13 @@
 from random import randint
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.filters import CarPriceFilter
 from apps.models import Car
 from apps.serializers import CarModelSerializer, SendCodeSerializer, VerifyCodeSerializer
 from apps.utils import send_code
@@ -13,6 +16,9 @@ from apps.utils import send_code
 class CarModelApi(ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarModelSerializer
+    filter_backends = [DjangoFilterBackend,SearchFilter]
+    filterset_class = CarPriceFilter
+    search_fields = 'model',
 
 class SendCodeApiView(APIView):
     serializer_class = SendCodeSerializer
