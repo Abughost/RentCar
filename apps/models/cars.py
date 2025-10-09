@@ -1,7 +1,8 @@
-from django.db.models import ImageField, ForeignKey, CASCADE, ManyToManyField, TextChoices
+from django.db.models import (CASCADE, ForeignKey, ImageField, ManyToManyField,
+                              TextChoices)
 from django.db.models.fields import CharField, IntegerField
 
-from apps.models.base import UUIDBaseModel, CreatedBaseModel
+from apps.models.base import CreatedBaseModel, UUIDBaseModel
 
 
 class FuelType(TextChoices):
@@ -39,7 +40,6 @@ class Car(UUIDBaseModel, CreatedBaseModel):
 class CarImage(UUIDBaseModel):
     car = ForeignKey('Car', on_delete=CASCADE, related_name='car_image')
     image = ImageField(upload_to='car/%Y/%m/%d/')
-
 
 class CarFeature(UUIDBaseModel):
     car = ForeignKey('Car', on_delete=CASCADE)

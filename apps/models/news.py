@@ -1,6 +1,6 @@
-from django.db.models import CharField, TextField, ImageField
+from django.db.models import CharField, ImageField, TextField
 
-from apps.models.base import UUIDBaseModel, CreatedBaseModel
+from apps.models.base import CreatedBaseModel, UUIDBaseModel
 
 
 class News(UUIDBaseModel, CreatedBaseModel):

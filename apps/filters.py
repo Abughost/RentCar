@@ -1,4 +1,4 @@
-from django_filters import FilterSet, NumberFilter, CharFilter
+from django_filters import CharFilter, FilterSet, NumberFilter
 
 from apps.models import Car
 

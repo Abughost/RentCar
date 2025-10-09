@@ -1,7 +1,7 @@
-from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import CharField
 import re
 
+from django.contrib.auth.models import AbstractUser
+from django.db.models.fields import CharField
 from rest_framework.exceptions import ValidationError
 
 from apps.models.base import UUIDBaseModel

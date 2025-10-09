@@ -9,12 +9,13 @@ from rest_framework.views import APIView
 
 from apps.filters import CarPriceFilter
 from apps.models import Car
-from apps.serializers import CarModelSerializer, SendCodeSerializer, VerifyCodeSerializer
+from apps.serializers import (CarModelSerializer, SendCodeSerializer,
+                              VerifyCodeSerializer)
 from apps.utils import send_code
 
 
-class CarModelApi(ListCreateAPIView):
-    queryset = Car.objects.all()
+class CarListCreateAPIView(ListCreateAPIView):
+    queryset = Car.oblect.all()
     serializer_class = CarModelSerializer
     filter_backends = [DjangoFilterBackend,SearchFilter]
     filterset_class = CarPriceFilter
