@@ -15,7 +15,7 @@ class UUIDBaseModel(Model):
         abstract = True
 
 
-class CreatedBaseModel(Model):
+class CreatedBaseModel(UUIDBaseModel):
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 

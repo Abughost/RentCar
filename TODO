@@ -5,6 +5,7 @@ docker compose      +
 Makefile            +
 isort, flake8
 minio
+sentry
 redis               +
 postgres            +
 github cicd
@@ -12,8 +13,9 @@ server
 websocket
 
 
+
 Task
-1. news va car modelini yozish
+1. news va car modelini yozish +
 2. register va login 1ta boladi (sms orqali)
 3. user modeli (balance?)
 4. filter (category boyicha, brand boyicha, min_price, max_price [electro, hybrid, gas])
