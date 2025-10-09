@@ -1,6 +1,3 @@
-.env
-.idea
-.venv
 .Python
 [Bb]in
 [Ii]nclude
@@ -17,7 +14,6 @@ pip-selfcheck.json
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/**/aws.xml
-.idea
 .idea/**/contentModel.xml
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -78,7 +74,6 @@ web_modules/
 .yarn-integrity
 .env
 .env.prod
-static
 .env.development.local
 .env.test.local
 .env.production.local

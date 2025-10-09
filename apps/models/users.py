@@ -4,11 +4,11 @@ import re
 
 from rest_framework.exceptions import ValidationError
 
-from apps.models.base import CustomUuidModel
+from apps.models.base import UUIDBaseModel
 from apps.models.managers import CustomUserManager
 
 
-class User(AbstractUser,CustomUuidModel):
+class User(AbstractUser, UUIDBaseModel):
     phone = CharField(max_length=20, unique=True)
     USERNAME_FIELD= 'phone'
 

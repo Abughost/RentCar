@@ -1,12 +1,12 @@
 https://rentcar.uz
 
 
-docker compose
-Makefile
+docker compose      +
+Makefile            +
 isort, flake8
 minio
-redis
-postgres
+redis               +
+postgres            +
 github cicd
 server
 websocket

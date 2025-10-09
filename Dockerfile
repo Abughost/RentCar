@@ -5,4 +5,8 @@ WORKDIR /app
 COPY ./ /app
 RUN uv sync
 
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+
 CMD ["uv", "run", "python3", "manage.py", "runserver", "0:8000"]
