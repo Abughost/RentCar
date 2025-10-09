@@ -5,11 +5,13 @@ docker compose      +
 Makefile            +
 isort, flake8
 minio
+sentry
 redis               +
 postgres            +
 github cicd
 server
 websocket
+
 
 
 Task
