@@ -6,7 +6,7 @@ from rest_framework.fields import CharField, IntegerField
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.models import User
+from apps.models import User, CarBrand
 from apps.models.cars import Car
 from apps.utils import check_phone
 
@@ -14,8 +14,19 @@ from apps.utils import check_phone
 class CarModelSerializer(ModelSerializer):
     class Meta:
         model = Car
-        fields = 'model',
+        fields = 'id','model','brand','color'
 
+class CarBrandSerializer(ModelSerializer):
+    class Meta:
+        model = CarBrand
+        fields = 'name',
+
+
+
+class UserModelSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = 'id','phone'
 
 class SendCodeSerializer(Serializer):
     phone = CharField(default='901001010')
@@ -28,12 +39,6 @@ class SendCodeSerializer(Serializer):
         if len(phone) > 9 and phone.startswith('998'):
             phone = phone.removeprefix('998')
         return phone
-
-class UserModelSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = 'id','phone'
-
 
 class VerifyCodeSerializer(Serializer):
     phone = CharField(default='901001010')

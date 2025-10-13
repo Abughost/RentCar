@@ -1,6 +1,6 @@
 from django.db.models import CharField, ImageField, TextField
 
-from apps.models.base import CreatedBaseModel, UUIDBaseModel
+from apps.models.base import CreatedBaseModel
 
 
 class New(CreatedBaseModel):

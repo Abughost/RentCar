@@ -1,7 +1,7 @@
 import os
-from os import getenv
 from pathlib import Path
 from dotenv import load_dotenv
+from minio.sseconfig import AWS_KMS
 
 load_dotenv('.env')
 
@@ -15,7 +15,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = (
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,12 +31,14 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework_simplejwt',
     'django_filters',
-]
+    'minio_storage'
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "django.middleware.locale.LocaleMiddleware", #i18n
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -92,7 +94,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = [
+    ('en','English'),
+    ('uz','Uzbek'),
+]
+
+LOCALE_PATHS =[
+os.path.join(BASE_DIR/ 'locale')
+]
 
 TIME_ZONE = 'UTC'
 
@@ -103,8 +114,21 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = [
+    'minio_storage.storage.MinioStaticStorage'
+]
+
+AWS_ACCESS_KEY_ID = os.getenv("MINIO_USER")
+AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_PASSWORD")
+AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_NAME")
+AWS_S3_ENDPOINT_URL = os.getenv("MINIO_PORT")
+MINIO_ACCESS_URL = os.getenv("MINIO_HOST")
+
+
+# MEDIA_URL = 'media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -113,7 +137,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_FILE_STORAGE' : "minio_storage.storage.MinioMediaStorage"
 }
 
 SPECTACULAR_SETTINGS = {
@@ -123,6 +148,7 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
+
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
@@ -269,7 +295,7 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
     # Add a language dropdown into the admin
-    # "language_chooser": True,
+    "language_chooser": True,
 }
 
 REDIS_HOST = os.getenv('REDIS_HOST')
@@ -281,3 +307,5 @@ CACHES = {
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
+
+MINIO_CONSISTENCY_CHECK_ON_START = True
