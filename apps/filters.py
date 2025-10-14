@@ -12,5 +12,5 @@ class CarPriceFilter(FilterSet):
 
     class Meta:
         model = Car
-        fields = 'model','type','brand_name','fuel_type'
+        fields = 'model','type','brand_name','fuel_type','is_available'
 

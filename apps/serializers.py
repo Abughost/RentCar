@@ -6,7 +6,7 @@ from rest_framework.fields import CharField, IntegerField
 from rest_framework.serializers import ModelSerializer, Serializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.models import User, CarBrand
+from apps.models import User, CarBrand, CarCategory
 from apps.models.cars import Car
 from apps.utils import check_phone
 
@@ -19,9 +19,12 @@ class CarModelSerializer(ModelSerializer):
 class CarBrandSerializer(ModelSerializer):
     class Meta:
         model = CarBrand
-        fields = 'name',
+        fields = 'id','name'
 
-
+class CarTypeSerializer(ModelSerializer):
+    class Meta:
+        model = CarCategory
+        fields = 'id','name'
 
 class UserModelSerializer(ModelSerializer):
     class Meta:

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from apps.models.base import CreatedBaseModel, UUIDBaseModel, BaseVerboseModel
 
 
-class CarType(UUIDBaseModel):
+class CarCategory(UUIDBaseModel):
     name = CharField(max_length=50)
 
     def __str__(self):
@@ -47,7 +47,7 @@ class Car(CreatedBaseModel):
 
     model = CharField(max_length=100)
     brand = ForeignKey('CarBrand', CASCADE, related_name='brand')
-    type = ForeignKey('CarType', CASCADE, related_name='type')
+    category = ForeignKey('CarCategory', CASCADE, related_name='type')
     color = ForeignKey('CarColor',CASCADE,related_name='color')  # TODO fk qilish kk
     year = DateField()
     deposit = IntegerField(default=0)
@@ -57,6 +57,9 @@ class Car(CreatedBaseModel):
     transmission_type = CharField(max_length=15, choices=TransmissionType.choices, default=TransmissionType.AUTOMATIC)
     features = ManyToManyField('apps.Feature', through='apps.CarFeature')
     is_available = BooleanField(default=True)
+
+    def __str__(self):
+        return self.model
 
 
 
@@ -73,3 +76,5 @@ class Feature(UUIDBaseModel,BaseVerboseModel):
     name = CharField(max_length=155)
     description = CharField(max_length=155)
 
+    def __str__(self):
+        return self.name
