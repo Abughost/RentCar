@@ -14,34 +14,39 @@ from apps.utils import check_phone
 class CarModelSerializer(ModelSerializer):
     class Meta:
         model = Car
-        fields = 'id','model','brand','color'
+        fields = 'id', 'model', 'brand', 'color'
+
 
 class CarBrandSerializer(ModelSerializer):
     class Meta:
         model = CarBrand
-        fields = 'id','name'
+        fields = 'id', 'name', 'logo'
+
 
 class CarTypeSerializer(ModelSerializer):
     class Meta:
         model = CarCategory
-        fields = 'id','name'
+        fields = 'id', 'name'
+
 
 class UserModelSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = 'id','phone'
+        fields = 'id', 'phone'
+
 
 class SendCodeSerializer(Serializer):
     phone = CharField(default='901001010')
 
     def validate_phone(self, value):
         digits = re.findall(r'\d', value)
-        if len(digits) < 9 :
+        if len(digits) < 9:
             raise ValidationError('Phone number must be at least 9 digits')
         phone = ''.join(digits)
         if len(phone) > 9 and phone.startswith('998'):
             phone = phone.removeprefix('998')
         return phone
+
 
 class VerifyCodeSerializer(Serializer):
     phone = CharField(default='901001010')
@@ -54,7 +59,7 @@ class VerifyCodeSerializer(Serializer):
 
     def validate_phone(self, value):
         digits = re.findall(r'\d', value)
-        if len(digits) < 9 :
+        if len(digits) < 9:
             raise ValidationError('Phone number must be at least 9 digits')
         phone = ''.join(digits)
         if len(phone) > 9 and phone.startswith('998'):
@@ -66,12 +71,12 @@ class VerifyCodeSerializer(Serializer):
         user_data = UserModelSerializer(self.user).data
 
         tokens = {
-            'access token' : str(refresh.access_token),
-            'refresh token' : str(refresh)
+            'access token': str(refresh.access_token),
+            'refresh token': str(refresh)
         }
         data = {
-            'message':'Valid Code',
-            **tokens,**user_data
+            'message': 'Valid Code',
+            **tokens, **user_data
         }
         return data
 
@@ -81,16 +86,10 @@ class VerifyCodeSerializer(Serializer):
             raise ValidationError({'message': 'invalid or expired code'})
         phone = attrs['phone']
 
-        self.user , _ = User.objects.get_or_create(phone=phone)
+        self.user, _ = User.objects.get_or_create(phone=phone)
         attrs['user'] = self.user
         return attrs
-
-
 
     @classmethod
     def get_token(cls, user):
         return cls.token_class.for_user(user)  # type: ignore
-
-
-
-

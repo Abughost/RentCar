@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-from minio.sseconfig import AWS_KMS
 
-load_dotenv('.env')
+from dotenv import load_dotenv
+
+load_dotenv('env/.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,15 +30,14 @@ INSTALLED_APPS = (
     # third part apps
     'drf_spectacular',
     'rest_framework_simplejwt',
-    'django_filters',
-    'minio_storage'
+    'django_filters'
 )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    "django.middleware.locale.LocaleMiddleware", #i18n
+    "django.middleware.locale.LocaleMiddleware",  # i18n
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -97,12 +96,12 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en'
 
 LANGUAGES = [
-    ('en','English'),
-    ('uz','Uzbek'),
+    ('en', 'English'),
+    ('uz', 'Uzbek'),
 ]
 
-LOCALE_PATHS =[
-os.path.join(BASE_DIR/ 'locale')
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR / 'locale')
 ]
 
 TIME_ZONE = 'UTC'
@@ -117,16 +116,44 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "storages.backends.s3.S3Storage",
+#     },
+# }
 
-STATICFILES_STORAGE = [
-    'minio_storage.storage.MinioStaticStorage'
-]
+# AWS_ACCESS_KEY_ID = 'minioadmin'
+# AWS_SECRET_ACCESS_KEY = 'minioadmin'
+# AWS_STORAGE_BUCKET_NAME = 'media'
+# AWS_QUERYSTRING_AUTH = True
+# AWS_QUERYSTRING_EXPIRE = 5
+# AWS_S3_USE_SSL = False
+# AWS_S3_ENDPOINT_URL = 'http://localhost:9000'
+# http://localhost:9000/media/car/icons/brand_logo/2025/10/14/MinIO.png?AWSAccessKeyId=minioadmin&Signature=v%2BJmdGwnaio%2FNQSZElCeFV1jWqY%3D&Expires=1760422965
 
-AWS_ACCESS_KEY_ID = os.getenv("MINIO_USER")
-AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_PASSWORD")
-AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_NAME")
-AWS_S3_ENDPOINT_URL = os.getenv("MINIO_PORT")
-MINIO_ACCESS_URL = os.getenv("MINIO_HOST")
+# files (.docx, .xlsx, .pdf)
+# media (.mp4, .mp3, .avi)
+
+#
+# MINIO_STORAGE_ENDPOINT = 'localhost:9000'
+# MINIO_STORAGE_ACCESS_KEY = 'minioadmin'
+# MINIO_STORAGE_SECRET_KEY = 'minioadmin'
+# MINIO_STORAGE_USE_HTTPS = False
+# MINIO_STORAGE_MEDIA_OBJECT_METADATA = {"Cache-Control": "max-age=1000"}
+# MINIO_STORAGE_MEDIA_BUCKET_NAME = 'local-media'
+# MINIO_STORAGE_MEDIA_BACKUP_BUCKET = 'Recycle Bin'
+# MINIO_STORAGE_MEDIA_BACKUP_FORMAT = '%c/'
+# MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+# MINIO_STORAGE_STATIC_BUCKET_NAME = 'local-static'
+# MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
+# MINIO_STORAGE_MEDIA_USE_PRESIGNED = True
+# MINIO_STORAGE_STATIC_USE_PRESIGNED = True
+
+# http://localhost:9000/local-media/car/icons/brand_logo/2025/10/14/MinIO.png
+# http://localhost:9000/local-media/car/icons/brand_logo/2025/10/14/MinIO.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20251014%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251014T051015Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a7abecceaa1334ee83e55d6465a1db981d6ba4467ce5c8d32e9afe7f1bb4e9a7
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -136,7 +163,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_FILE_STORAGE' : "minio_storage.storage.MinioMediaStorage"
+    'DEFAULT_FILE_STORAGE': "minio_storage.storage.MinioMediaStorage"
 }
 
 SPECTACULAR_SETTINGS = {
@@ -146,7 +173,6 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
@@ -305,5 +331,3 @@ CACHES = {
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
-
-MINIO_CONSISTENCY_CHECK_ON_START = True
