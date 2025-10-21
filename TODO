@@ -20,5 +20,50 @@ Task
 3. user modeli (balance?)
 4. filter (category boyicha, brand boyicha, min_price, max_price [electro, hybrid, gas])
 5. search (car name boyicha)
-6. category, brand malumotlarini fixtures qilib yozib qoyish
+6. category, brand malumotlarini fixtures qilib yozib qoyish +
 7. README.md qoyish kerak (project haqida information berish boyicha)
+
+
+8. adminkada car edit page rasmni chiqadigan qilish (yoq bolsa no image rasmini korsatish)
+9. userni user va admin ga bolish
+10. admin uchun apilar bolsin (brand, car, category crud ishlata olsin), user uchun esa kora olish apilari bolsin
+11. sms kutish vaqti
+12. list apilar uchun pagination qoshish
+13. response larni message va data ga o'rash
+{
+    "message": "Valid Code",
+    "data":  {
+      "access token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYxMDI3NTE1LCJpYXQiOjE3NjEwMjcyMTUsImp0aSI6ImI2YWVmMjc5ZWM2ZTRiNTdhZmUwODdjODY2MDhkZDk4IiwidXNlcl9pZCI6ImEwNGFkNDM0LTI4NWItNGJhMy1iOGJhLTEzMDExNzI4ZDI0ZSJ9.HACcnntchBqjYF30o0Uq9lv5mstlFl_jl3q0w9A4SL8",
+      "refresh token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MTExMzYxNSwiaWF0IjoxNzYxMDI3MjE1LCJqdGkiOiI0N2MwMjFlZjMyOGY0YjYxYWMyNWZjYjU0MTkxOTBhZCIsInVzZXJfaWQiOiJhMDRhZDQzNC0yODViLTRiYTMtYjhiYS0xMzAxMTcyOGQyNGUifQ.L4qaMoQLXFaHpYZ7SS8kzrnJZL5WiYHmtN-zNrFecvU",
+      "id": "a04ad434-285b-4ba3-b8ba-13011728d24e",
+      "phone": "901001010"
+    }
+}
+14.
+{
+    "id": "12d6aa16-b6d1-4c99-8053-dd163bc03bc9",
+    "daily_price": 1200000,
+    "created_at": "2025-10-18T16:25:50.445000Z",
+    "updated_at": "2025-10-18T16:25:50.445000Z",
+    "model": "K5 G515",
+    "main_photo": "http://127.0.0.1:8000/media/main_images/kia_main.jpeg",
+    "year": "2022-10-01",
+    "deposit": 1200000,
+    "limit_km": 300,
+    "fuel_type": "gas",
+    "transmission_type": "automatic",
+    "is_available": true,
+    "brand": {
+        "id": "673393d3-dcaf-4bcc-868f-26925211b88d",
+        "name": "Chevrolet",
+        "logo": "http://127.0.0.1:8000/media/car/icons/brand_logo/2025/10/18/Chevrolet-logo.png"
+    },
+    "category": "7031c303-8be0-4189-aa25-01492f72d539",
+    "color": "45669231-bce0-48db-a18b-39cb4a2930b8",
+    "features": [
+      "8bbc1b58-ae81-40d9-9822-4d14b8e46788"
+    ]
+  }
+
+
+15.

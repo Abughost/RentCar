@@ -158,7 +158,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Your project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_SETTINGS': {
+        'defaultModelsExpandDepth': -1
+    }
 }
 
 PASSWORD_HASHERS = [
