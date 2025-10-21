@@ -10,3 +10,6 @@ compile_msg:
 
 dbshell:
 	docker exec -itu postgres pg psql -d rent_car
+
+loaddata:
+	python3 manage.py loaddata carbrand carcategory carcolor carfeature carprice cars feature

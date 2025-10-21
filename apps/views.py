@@ -78,14 +78,10 @@ class RentCarCreateApiView(CreateAPIView):
 
         if not user:
             return Response({'message': 'User Not found, Register first'}, status.HTTP_404_NOT_FOUND)
-
         if serializer.is_valid():
             serializer.save(user = user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 class SendCodeAPIView(APIView):
