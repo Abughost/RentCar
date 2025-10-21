@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline
 from django.contrib.auth.models import Group
 
-from apps.models import Car, User, CarBrand, CarCategory, Feature, CarFeature, CarImage
+from apps.models import Car, User, CarBrand, CarCategory, Feature, CarImage, CarPrice, CarFeature
 from apps.models.cars import CarColor
 from apps.models.news import New
 
@@ -19,7 +19,15 @@ class UserAdmin(ModelAdmin):
 
 @admin.register(Car)
 class CarAdminModel(ModelAdmin):
-    list_display = 'model', 'brand','daily_price','category','transmission_type','fuel_type','is_available'
+    list_display = 'model', 'brand','category','daily_price','deposit','transmission_type','fuel_type','is_available'
+    list_filter = 'model','brand','category'
+
+
+    def daily_price(self, obj):
+        price = CarPrice.objects.filter(car=obj.id).first()
+        return price.daily_price if price else "_"
+    daily_price.short_description = 'Daily price'
+
 
 @admin.register(CarBrand)
 class CarBrandAdminModel(ModelAdmin):
@@ -33,10 +41,6 @@ class CarColorAdminModel(ModelAdmin):
 class CarTypeAdminModel(ModelAdmin):
     list_display = 'name',
 
-@admin.register(CarFeature)
-class CarFeatureModelAdmin(ModelAdmin):
-    list_display = 'id','car','feature'
-
 @admin.register(Feature)
 class FeatureModelAdmin(ModelAdmin):
     list_display = 'id','name','icon'
@@ -45,6 +49,14 @@ class FeatureModelAdmin(ModelAdmin):
 @admin.register(CarImage)
 class CarImageModelAdmin(ModelAdmin):
     list_display = 'id', 'car', 'image'
+
+@admin.register(CarPrice)
+class CarPriceModelAdmin(ModelAdmin):
+    list_display = 'id', 'car__model','daily_price'
+
+@admin.register(CarFeature)
+class CarFeatureModelAdmin(ModelAdmin):
+    list_display = 'car','feature'
 
 @admin.register(New)
 class NewModelAdmin(ModelAdmin):

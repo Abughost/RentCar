@@ -1,8 +1,8 @@
 from django.db.models import CharField, IntegerField, ImageField, ForeignKey, CASCADE, ManyToManyField, TextChoices, \
     DateField, BooleanField
-from django.utils.translation import gettext_lazy as _
+from django_ckeditor_5.fields import CKEditor5Field
 
-from apps.models.base import CreatedBaseModel, UUIDBaseModel, BaseVerboseModel
+from apps.models.base import CreatedBaseModel, UUIDBaseModel
 
 
 class CarCategory(UUIDBaseModel):
@@ -11,23 +11,21 @@ class CarCategory(UUIDBaseModel):
     def __str__(self):
         return self.name
 
-
-
-
-class CarBrand(UUIDBaseModel, BaseVerboseModel):
+class CarBrand(UUIDBaseModel):
     name = CharField(max_length=50)
     logo = ImageField(upload_to='car/icons/brand_logo/%Y/%m/%d/')
 
     def __str__(self):
         return self.name
 
-class CarColor(UUIDBaseModel, BaseVerboseModel):
+class CarColor(UUIDBaseModel):
     name = CharField(max_length=155)
 
     def __str__(self):
         return self.name
 
 class CarPrice(CreatedBaseModel):
+    car = ForeignKey('apps.Car',CASCADE,related_name='price')
     daily_price = IntegerField()
     one_to_three_day = IntegerField()
     three_to_seven_day = IntegerField()
@@ -48,33 +46,42 @@ class Car(CreatedBaseModel):
     model = CharField(max_length=100)
     brand = ForeignKey('CarBrand', CASCADE, related_name='brand')
     category = ForeignKey('CarCategory', CASCADE, related_name='type')
-    color = ForeignKey('CarColor',CASCADE,related_name='color')  # TODO fk qilish kk
+    color = ForeignKey('CarColor',CASCADE,related_name='color')
+    main_photo = ImageField(upload_to='main_images/')
     year = DateField()
     deposit = IntegerField(default=0)
     limit_km = IntegerField(default=0)
-    daily_price = IntegerField()
     fuel_type = CharField(max_length=15, choices=FuelType.choices, default=FuelType.GAS)
     transmission_type = CharField(max_length=15, choices=TransmissionType.choices, default=TransmissionType.AUTOMATIC)
-    features = ManyToManyField('apps.Feature', through='apps.CarFeature')
+    features = ManyToManyField('apps.Feature',through='apps.CarFeature')
     is_available = BooleanField(default=True)
 
     def __str__(self):
         return self.model
 
+class CarFeature(UUIDBaseModel):
+    car = ForeignKey("apps.Car", CASCADE)
+    feature = ForeignKey("apps.Feature", CASCADE)
 
-
-class CarImage(UUIDBaseModel, BaseVerboseModel):
+class CarImage(UUIDBaseModel):
     car = ForeignKey('Car', CASCADE, related_name='images')
     image = ImageField(upload_to='car/images/%Y/%m/%d/')
 
-class CarFeature(UUIDBaseModel, BaseVerboseModel):
-    car = ForeignKey('Car', CASCADE)
-    feature = ForeignKey('Feature', CASCADE)
-
-class Feature(UUIDBaseModel,BaseVerboseModel):
+class Feature(UUIDBaseModel):
     icon = ImageField(upload_to='car/icons/features/%Y/%m/%d/')
     name = CharField(max_length=155)
     description = CharField(max_length=155)
 
     def __str__(self):
         return self.name
+
+class Reviews(UUIDBaseModel):
+    car = ForeignKey('apps.Car',CASCADE,related_name='reviews')
+    user = ForeignKey('apps.User', CASCADE, related_name='reviews')
+    stars = IntegerField()
+    comment = CKEditor5Field()
+
+
+
+
+

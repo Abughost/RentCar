@@ -1,6 +1,8 @@
 import re
 
 from django.contrib.auth.models import AbstractUser
+from django.core.cache import CacheHandler
+from django.db.models import OneToOneField, CASCADE, IntegerField, DateField, TextChoices
 from django.db.models.fields import CharField
 from rest_framework.exceptions import ValidationError
 
@@ -27,5 +29,16 @@ class User(AbstractUser, UUIDBaseModel):
     def save(self, *, force_insert=False, force_update=False, using=None, update_fields=None):
         self.check_phone()
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
+
+class UserProfile(UUIDBaseModel):
+    user = OneToOneField('apps.User',CASCADE, related_name='profile')
+    first_name = CharField(max_length=255)
+    last_name = CharField(max_length=255)
+    data_of_birth = DateField()
+    driver_licence_date_of_issue = DateField()
+    id_card_number = CharField(max_length=9)
+    personal_number = CharField(max_length=14)
+    driver_licence_number = CharField(max_length=9)
 
 

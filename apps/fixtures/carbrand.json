@@ -1,0 +1,34 @@
+[
+{
+    "model": "apps.carbrand",
+    "pk": "673393d3-dcaf-4bcc-868f-26925211b88d",
+    "fields": {
+        "name": "Chevrolet",
+        "logo": "car/icons/brand_logo/2025/10/18/Chevrolet-logo.png"
+    }
+},
+{
+    "model": "apps.carbrand",
+    "pk": "72ffeba6-79e6-47bb-a86b-830bdc8bf115",
+    "fields": {
+        "name": "Kia",
+        "logo": "car/icons/brand_logo/2025/10/18/kia_logo.png"
+    }
+},
+{
+    "model": "apps.carbrand",
+    "pk": "9d0475ea-da96-497e-acd8-4ab2348fd2ff",
+    "fields": {
+        "name": "BMW",
+        "logo": "car/icons/brand_logo/2025/10/18/bmw_logo.png"
+    }
+},
+{
+    "model": "apps.carbrand",
+    "pk": "dfdd10c2-f331-4396-9a3e-ad76bedf9cf0",
+    "fields": {
+        "name": "Mercedes-Benz",
+        "logo": "car/icons/brand_logo/2025/10/18/mercedes-logo.png"
+    }
+}
+]

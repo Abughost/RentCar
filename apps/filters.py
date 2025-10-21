@@ -8,9 +8,9 @@ class CarPriceFilter(FilterSet):
     max_price = NumberFilter(field_name='price', lookup_expr='lte')
 
     type = CharFilter(field_name='type__name',lookup_expr='icontains')
-    brand_name = CharFilter(field_name='brand__brand_name',lookup_expr='icontains')
+    brand_uuid = CharFilter(field_name='brand__brand_name',lookup_expr='icontains')
 
     class Meta:
         model = Car
-        fields = 'model','type','brand_name','fuel_type','is_available'
+        fields = 'model','type','brand_uuid','fuel_type','is_available'
 

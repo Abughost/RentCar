@@ -1,0 +1,11 @@
+[
+{
+    "model": "apps.feature",
+    "pk": "8bbc1b58-ae81-40d9-9822-4d14b8e46788",
+    "fields": {
+        "icon": "car/icons/features/2025/10/18/a_c_logo.webp",
+        "name": "A/C",
+        "description": "Air Conditioner"
+    }
+}
+]

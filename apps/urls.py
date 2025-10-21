@@ -1,16 +1,16 @@
 from django.urls import path
 
-from apps.views import CarListCreateAPIView, SendCodeAPIView, VerifyCodeAPIView, RetrieveUpdateDestroyAPIView, \
-    CarBrandListAPIView, CarBrandRetrieveAPIView, CarTypeListAPIView, CarTypeRetrieveAPIView
+from apps.views import CarListAPIView, SendCodeAPIView, VerifyCodeAPIView, \
+    CarBrandListAPIView, CarTypeListAPIView, CarRetrieveAPIView, UserCreateAPIView, RentCarCreateApiView
 
 urlpatterns = [
     path('auth/send-code', SendCodeAPIView.as_view(), name='send_code'),
     path('auth/verify-code', VerifyCodeAPIView.as_view(), name='verify_code'),
-    path('car', CarListCreateAPIView.as_view(), name='car_model'),
-    path('car/<uuid:uuid>',RetrieveUpdateDestroyAPIView.as_view(), name='car_detail'),
-    path('car/brand',CarBrandListAPIView.as_view(), name='car_detail'),
-    path('car/brand/<uuid:uuid>',CarBrandRetrieveAPIView.as_view(),name='car_brand_detail'),
-    path('car/category',CarTypeListAPIView.as_view()),
-    path('car/category/<uuid:uuid>',CarTypeRetrieveAPIView.as_view()),
+    path('auth/verify-user',UserCreateAPIView.as_view(),name='user_profile'),
+    path('cars', CarListAPIView.as_view(), name='car_model'),
+    path('cars/<uuid:pk>', CarRetrieveAPIView.as_view(), name='car_detail'),
+    path('cars/brand',CarBrandListAPIView.as_view(), name='car_detail'),
+    path('cars/category',CarTypeListAPIView.as_view(), name='car_category'),
+    path('rents/car' , RentCarCreateApiView.as_view(), name='rent_car')
 
 ]

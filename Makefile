@@ -8,4 +8,5 @@ msg:
 compile_msg:
 	python3 manage.py compilemessages -i .venv
 
-
+dbshell:
+	docker exec -itu postgres pg psql -d rent_car

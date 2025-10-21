@@ -30,7 +30,8 @@ INSTALLED_APPS = (
     # third part apps
     'drf_spectacular',
     'rest_framework_simplejwt',
-    'django_filters'
+    'django_filters',
+    'django_ckeditor_5'
 )
 
 MIDDLEWARE = [
@@ -74,8 +75,9 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER'),
         'PORT': os.getenv('POSTGRES_PORT'),
         'HOST': os.getenv('POSTGRES_HOST'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD')
-    }
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -125,35 +127,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #     },
 # }
 
-# AWS_ACCESS_KEY_ID = 'minioadmin'
-# AWS_SECRET_ACCESS_KEY = 'minioadmin'
-# AWS_STORAGE_BUCKET_NAME = 'media'
-# AWS_QUERYSTRING_AUTH = True
-# AWS_QUERYSTRING_EXPIRE = 5
-# AWS_S3_USE_SSL = False
-# AWS_S3_ENDPOINT_URL = 'http://localhost:9000'
-# http://localhost:9000/media/car/icons/brand_logo/2025/10/14/MinIO.png?AWSAccessKeyId=minioadmin&Signature=v%2BJmdGwnaio%2FNQSZElCeFV1jWqY%3D&Expires=1760422965
-
-# files (.docx, .xlsx, .pdf)
-# media (.mp4, .mp3, .avi)
-
 #
-# MINIO_STORAGE_ENDPOINT = 'localhost:9000'
-# MINIO_STORAGE_ACCESS_KEY = 'minioadmin'
-# MINIO_STORAGE_SECRET_KEY = 'minioadmin'
-# MINIO_STORAGE_USE_HTTPS = False
-# MINIO_STORAGE_MEDIA_OBJECT_METADATA = {"Cache-Control": "max-age=1000"}
-# MINIO_STORAGE_MEDIA_BUCKET_NAME = 'local-media'
-# MINIO_STORAGE_MEDIA_BACKUP_BUCKET = 'Recycle Bin'
-# MINIO_STORAGE_MEDIA_BACKUP_FORMAT = '%c/'
-# MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
-# MINIO_STORAGE_STATIC_BUCKET_NAME = 'local-static'
-# MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
-# MINIO_STORAGE_MEDIA_USE_PRESIGNED = True
-# MINIO_STORAGE_STATIC_USE_PRESIGNED = True
-
-# http://localhost:9000/local-media/car/icons/brand_logo/2025/10/14/MinIO.png
-# http://localhost:9000/local-media/car/icons/brand_logo/2025/10/14/MinIO.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20251014%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251014T051015Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a7abecceaa1334ee83e55d6465a1db981d6ba4467ce5c8d32e9afe7f1bb4e9a7
+MINIO_STORAGE_ENDPOINT = 'localhost:9000'
+MINIO_STORAGE_ACCESS_KEY = 'minioadmin223'
+MINIO_STORAGE_SECRET_KEY = 'minioadmin223'
+MINIO_STORAGE_USE_HTTPS = False
+MINIO_STORAGE_MEDIA_OBJECT_METADATA = {"Cache-Control": "max-age=1000"}
+MINIO_STORAGE_MEDIA_BUCKET_NAME = 'local-media'
+MINIO_STORAGE_MEDIA_BACKUP_BUCKET = 'Recycle Bin'
+MINIO_STORAGE_MEDIA_BACKUP_FORMAT = '%c/'
+MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET = True
+MINIO_STORAGE_STATIC_BUCKET_NAME = 'local-static'
+MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
+MINIO_STORAGE_MEDIA_USE_PRESIGNED = True
+MINIO_STORAGE_STATIC_USE_PRESIGNED = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -331,3 +318,100 @@ CACHES = {
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
     }
 }
+
+customColorPalette = [
+    {
+        'color': 'hsl(4, 90%, 58%)',
+        'label': 'Red'
+    },
+    {
+        'color': 'hsl(340, 82%, 52%)',
+        'label': 'Pink'
+    },
+    {
+        'color': 'hsl(291, 64%, 42%)',
+        'label': 'Purple'
+    },
+    {
+        'color': 'hsl(262, 52%, 47%)',
+        'label': 'Deep Purple'
+    },
+    {
+        'color': 'hsl(231, 48%, 48%)',
+        'label': 'Indigo'
+    },
+    {
+        'color': 'hsl(207, 90%, 54%)',
+        'label': 'Blue'
+    },
+]
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': ['heading', '|', 'bold', 'italic', 'link',
+                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+        }
+
+    },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
+        ],
+        'toolbar': {
+            'items': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+                      'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                      'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
+                      'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                      'insertTable',
+                      ],
+            'shouldNotGroupWhenFull': 'true'
+        },
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side', '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
+                               'tableProperties', 'tableCellProperties'],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
+            ]
+        }
+    },
+    'list': {
+        'properties': {
+            'styles': 'true',
+            'startIndex': 'true',
+            'reversed': 'true',
+        }
+    }
+}
+
+# Define a constant in settings.py to specify file upload permissions
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"  # Possible values: "staff", "authenticated", "any"

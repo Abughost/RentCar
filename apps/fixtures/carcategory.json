@@ -1,0 +1,30 @@
+[
+{
+    "model": "apps.carcategory",
+    "pk": "22338c33-3581-43b3-b0ca-a0fc6c0cb42e",
+    "fields": {
+        "name": "Sedan"
+    }
+},
+{
+    "model": "apps.carcategory",
+    "pk": "7031c303-8be0-4189-aa25-01492f72d539",
+    "fields": {
+        "name": "Premium"
+    }
+},
+{
+    "model": "apps.carcategory",
+    "pk": "8a066c5f-400e-4c6d-bf50-aaf8c1b54ab7",
+    "fields": {
+        "name": "Butget-friendly"
+    }
+},
+{
+    "model": "apps.carcategory",
+    "pk": "ecaf265a-864c-44cb-a4e2-1cbc6f0fd24f",
+    "fields": {
+        "name": "SUV"
+    }
+}
+]

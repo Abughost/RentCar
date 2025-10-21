@@ -72,8 +72,8 @@ web_modules/
 .node_repl_history
 *.tgz
 .yarn-integrity
-.env
-.env.prod
+env/.env
+env/.env.prod
 .env.development.local
 .env.test.local
 .env.production.local
