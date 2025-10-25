@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from apps.filters import CarPriceFilter
 from apps.models import Car, CarBrand, CarCategory
 from apps.models.base import IsAdminOrReadOnly
-from apps.paginations import CustomCursorPagination
+# from apps.paginations import CustomCursorPagination
 from apps.serializers import (CarBrandModelSerializer,
                               CarCategoryModelSerializer,
                               CarDetailModelSerializer, CarModelSerializer,

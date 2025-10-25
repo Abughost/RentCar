@@ -16,9 +16,11 @@ superuser
 admin
 user
 """
+
+
 class User(AbstractUser, UUIDBaseModel):
     phone = CharField(max_length=20, unique=True)
-    USERNAME_FIELD= 'phone'
+    USERNAME_FIELD = 'phone'
 
     username = None
     email = None
@@ -38,7 +40,7 @@ class User(AbstractUser, UUIDBaseModel):
 
 
 class UserProfile(UUIDBaseModel):
-    user = OneToOneField('apps.User',CASCADE, related_name='profile')
+    user = OneToOneField('apps.User', CASCADE, related_name='profile')
     first_name = CharField(max_length=255)
     last_name = CharField(max_length=255)
     data_of_birth = DateField()
@@ -46,5 +48,3 @@ class UserProfile(UUIDBaseModel):
     id_card_number = CharField(max_length=9)
     personal_number = CharField(max_length=14)
     driver_licence_number = CharField(max_length=9)
-
-

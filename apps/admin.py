@@ -79,7 +79,7 @@ class CarFeatureModelAdmin(ModelAdmin):
 class NewModelAdmin(ModelAdmin):
     list_display = 'id','title'
 
-
-
-
-admin.site.unregister(Group)
+#
+#
+#
+# admin.site.unregister(Group)

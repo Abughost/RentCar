@@ -11,17 +11,18 @@ def get_login_data(phone):
     return f"login:{phone}"
 
 
-def send_code(phone: str, code: int, expired_time=60):
+def send_code(phone: str, code: int, expired_time=3600):
     redis = Redis.from_url(settings.CACHES['default']['LOCATION'])
     _phone = get_login_data(phone)
-    _ttl = redis.ttl(_phone)
+    _ttl = redis.ttl(f':1:{_phone}')
 
     if _ttl > 0:
-        return False , _ttl
+        return False, _ttl
 
     print(f'Phone: {phone} == Code: {code}')
     cache.set(_phone, code, expired_time)
     return True, 0
+
 
 def check_phone(phone: str, code: int):
     _phone = get_login_data(phone)

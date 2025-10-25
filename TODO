@@ -25,9 +25,9 @@ Task
 
 
 8. adminkada car edit page rasmni chiqadigan qilish (yoq bolsa no image rasmini korsatish)
-9. userni user va admin ga bolish
+9. userni user, moderator va admin ga bolish
 10. admin uchun apilar bolsin (brand, car, category crud ishlata olsin), user uchun esa kora olish apilari bolsin
-11. sms kutish vaqti
+11. sms kutish vaqti +
 12. list apilar uchun pagination qoshish
 13. response larni message va data ga o'rash
 {
@@ -66,4 +66,4 @@ Task
   }
 
 
-15.
+15. adminkada user passwordini change qilish
