@@ -150,7 +150,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_FILE_STORAGE': "minio_storage.storage.MinioMediaStorage"
+    'DEFAULT_FILE_STORAGE': "minio_storage.storage.MinioMediaStorage",
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
 }
 
 SPECTACULAR_SETTINGS = {
@@ -319,6 +320,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}',
+
     }
 }
 

@@ -1,5 +1,8 @@
-from django.db.models import CharField, IntegerField, ImageField, ForeignKey, CASCADE, ManyToManyField, TextChoices, \
-    DateField, BooleanField
+from pyexpat import features
+
+from django.db.models import (CASCADE, BooleanField, CharField, DateField,
+                              ForeignKey, ImageField, IntegerField,
+                              ManyToManyField, TextChoices)
 from django_ckeditor_5.fields import CKEditor5Field
 
 from apps.models.base import CreatedBaseModel, UUIDBaseModel
@@ -47,7 +50,6 @@ class Car(CreatedBaseModel):
     brand = ForeignKey('CarBrand', CASCADE, related_name='brand')
     category = ForeignKey('CarCategory', CASCADE, related_name='type')
     color = ForeignKey('CarColor',CASCADE,related_name='color')
-    main_photo = ImageField(upload_to='main_images/')
     year = DateField()
     deposit = IntegerField(default=0)
     limit_km = IntegerField(default=0)
@@ -62,6 +64,7 @@ class Car(CreatedBaseModel):
 class CarFeature(UUIDBaseModel):
     car = ForeignKey("apps.Car", CASCADE)
     feature = ForeignKey("apps.Feature", CASCADE)
+
 
 class CarImage(UUIDBaseModel):
     car = ForeignKey('Car', CASCADE, related_name='images')

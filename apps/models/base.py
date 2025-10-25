@@ -1,7 +1,7 @@
 from django.db.models import Func, Model
 from django.db.models.fields import DateTimeField, UUIDField
 from django.utils.translation import gettext_lazy as _
-
+from rest_framework.permissions import BasePermission
 
 
 class GenRandomUUID(Func):
@@ -22,3 +22,10 @@ class CreatedBaseModel(UUIDBaseModel):
 
     class Meta:
         abstract = True
+
+class IsAdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        else:
+            return request.user.is_superuser

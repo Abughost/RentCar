@@ -2,13 +2,13 @@ import re
 
 from django.contrib.auth.models import AbstractUser
 from django.core.cache import CacheHandler
-from django.db.models import OneToOneField, CASCADE, IntegerField, DateField, TextChoices
+from django.db.models import (CASCADE, DateField, IntegerField, OneToOneField,
+                              TextChoices)
 from django.db.models.fields import CharField
 from rest_framework.exceptions import ValidationError
 
 from apps.models.base import UUIDBaseModel
 from apps.models.managers import CustomUserManager
-
 
 """
 superuser

@@ -1,4 +1,4 @@
-from django.db.models import ForeignKey, CASCADE, DateTimeField, CharField
+from django.db.models import CASCADE, CharField, DateTimeField, ForeignKey
 from django.db.models.enums import TextChoices
 
 from apps.models.base import CreatedBaseModel

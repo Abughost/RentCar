@@ -2,26 +2,15 @@ import re
 from typing import Any
 
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import IntegerField, SerializerMethodField, HiddenField, CurrentUserDefault
-from rest_framework.serializers import ModelSerializer, Serializer, CharField
+from rest_framework.fields import CurrentUserDefault, HiddenField, \
+                                   IntegerField, SerializerMethodField
+from rest_framework.serializers import CharField, ModelSerializer, Serializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.models import User, CarBrand, CarCategory, Car, CarPrice, Feature, CarImage, Rental
+from apps.models import Car, CarBrand, CarCategory, CarImage, CarPrice, \
+                         Feature, Rental, User
 from apps.models.users import UserProfile
 from apps.utils import check_phone
-from root.settings import LANGUAGE_CODE
-
-
-class CarModelSerializer(ModelSerializer):
-    daily_price = SerializerMethodField()
-
-    class Meta:
-        model = Car
-        fields = "__all__"
-
-    def get_daily_price(self, obj):
-        price = CarPrice.objects.filter(car=obj.id).first()
-        return price.daily_price if price else None
 
 
 class CarPriceModelSerializer(ModelSerializer):
@@ -54,6 +43,18 @@ class CarImageModelSerializer(ModelSerializer):
         fields = 'image',
 
 
+class CarModelSerializer(ModelSerializer):
+    daily_price = SerializerMethodField()
+    features = CarFeatureModelSerializer(many=True)
+
+    class Meta:
+        model = Car
+        fields = 'id', "model", 'daily_price', 'deposit', 'limit_km', 'features'
+
+    def get_daily_price(self, obj):
+        price = CarPrice.objects.filter(car=obj.id).first()
+        return price.daily_price if price else None
+
 class CarDetailModelSerializer(ModelSerializer):
     brand = CharField(source='brand.name')
     prices = CarPriceModelSerializer(many=True, source='price')
@@ -63,7 +64,7 @@ class CarDetailModelSerializer(ModelSerializer):
 
     class Meta:
         model = Car
-        fields = 'id', 'model', 'brand', 'prices', 'features', 'similar_cars', 'main_photo', 'images'
+        fields = 'id', 'model', 'brand', 'prices', 'features', 'similar_cars', 'images'
         lookup_fields = 'id', 'model'
 
     def get_similar_cars(self, obj):
@@ -76,7 +77,7 @@ class VerifiedUserModelSerializer(ModelSerializer):
 
     class Meta:
         model = UserProfile
-        exclude = 'user',
+        exclude = ()
 
 
 class RentModelSerializer(ModelSerializer):
@@ -132,7 +133,7 @@ class VerifyCodeSerializer(Serializer):
         }
         data = {
             'message': 'Valid Code',
-            **tokens, **user_data
+            "data":{**tokens, **user_data}
         }
         return data
 

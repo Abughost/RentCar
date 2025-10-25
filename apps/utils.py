@@ -1,6 +1,10 @@
+from django.conf import settings
 from django.core.cache import cache
+from redis import Redis
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+
+from root.settings import REDIS_PORT, REDIS_HOST
 
 
 def get_login_data(phone):
@@ -8,10 +12,16 @@ def get_login_data(phone):
 
 
 def send_code(phone: str, code: int, expired_time=60):
-    print(f'Phone: {phone} == Code: {code}')
+    redis = Redis.from_url(settings.CACHES['default']['LOCATION'])
     _phone = get_login_data(phone)
-    cache.set(_phone, code)
+    _ttl = redis.ttl(_phone)
 
+    if _ttl > 0:
+        return False , _ttl
+
+    print(f'Phone: {phone} == Code: {code}')
+    cache.set(_phone, code, expired_time)
+    return True, 0
 
 def check_phone(phone: str, code: int):
     _phone = get_login_data(phone)

@@ -2,87 +2,83 @@ from random import randint
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import status
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, CreateAPIView, \
-    RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, ListCreateAPIView, \
+    RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import CursorPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.filters import CarPriceFilter
-from apps.models import Car, CarBrand, CarCategory, Rental
-from apps.serializers import CarModelSerializer, SendCodeSerializer, VerifyCodeSerializer, CarBrandModelSerializer, \
-    CarCategoryModelSerializer, CarDetailModelSerializer, VerifiedUserModelSerializer, RentModelSerializer
+from apps.models import Car, CarBrand, CarCategory
+from apps.models.base import IsAdminOrReadOnly
+from apps.paginations import CustomCursorPagination
+from apps.serializers import (CarBrandModelSerializer,
+                              CarCategoryModelSerializer,
+                              CarDetailModelSerializer, CarModelSerializer,
+                              RentModelSerializer, SendCodeSerializer,
+                              VerifiedUserModelSerializer,
+                              VerifyCodeSerializer)
 from apps.utils import send_code
 
 
 @extend_schema(tags=['Cars'])
-class CarListAPIView(ListAPIView):
+class CarListCreateAPIView(ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarModelSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = CarPriceFilter
     search_fields = 'brand_name', 'model'
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
+
 
     def get_queryset(self):
         return super().get_queryset().filter(is_available=True)
 
 
 @extend_schema(tags=['Cars'])
-class CarRetrieveAPIView(RetrieveUpdateDestroyAPIView):
+class CarRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
-    serializer_class = CarDetailModelSerializer
-
-    # def put(self, request, pk):
-    #     try:
-    #         car = Car.objects.filter(id=pk).first()
-    #     except Car.DoesNotExist:
-    #         return Response({"Detail": 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
-    #
-    #     serializer = CarModelSerializer(car, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    serializer_class = CarModelSerializer
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
 
 @extend_schema(tags=['Car Brand & Category'])
-class CarBrandListAPIView(ListCreateAPIView):
+class CarBrandListCreateAPIView(ListCreateAPIView):
     queryset = CarBrand.objects.all()
     serializer_class = CarBrandModelSerializer
-
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
 
 @extend_schema(tags=['Car Brand & Category'])
-class CarTypeListAPIView(ListAPIView):
+class CarBrandRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = CarBrand.objects.all()
+    serializer_class = CarBrandModelSerializer
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
+
+@extend_schema(tags=['Car Brand & Category'])
+class CarTypeListCreateAPIView(ListCreateAPIView):
     queryset = CarCategory.objects.all()
     serializer_class = CarCategoryModelSerializer
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
 
+@extend_schema(tags=['Car Brand & Category'])
+class CarCategoryRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = CarCategory.objects.all()
+    serializer_class = CarCategoryModelSerializer
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = VerifiedUserModelSerializer
     permission_classes = [IsAuthenticated]
-
-    # def post(self, request, *args, **kwargs):
-    #     serializer = self.serializer_class(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save(user=request.user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @extend_schema(tags=['Rental'])
 class RentCarCreateApiView(CreateAPIView):
     serializer_class = RentModelSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     user = getattr(request.user, 'userprofile', None)
-    #
-    #
-    #     if not user:
-    #         return Response({'message': 'User Not found, Register first'}, status.HTTP_404_NOT_FOUND)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save(user=user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+@extend_schema(tags=['Rental'])
+class RentCarRetrieveAPIView(RetrieveAPIView):
+    serializer_class = RentModelSerializer
 
 
 class SendCodeAPIView(APIView):
@@ -93,9 +89,10 @@ class SendCodeAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         phone = request.data['phone']
         code = randint(100_000, 999_999)
-        send_code(phone, code)
-        return Response({'message': "sms code sent"})
-
+        valid, _ttl = send_code(phone, code)
+        if valid:
+            return Response({'message': "sms code sent"})
+        return Response({'message':f'You have {_ttl} seconds left'})
 
 class VerifyCodeAPIView(APIView):
     serializer_class = VerifyCodeSerializer

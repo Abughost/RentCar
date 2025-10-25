@@ -1,32 +1,49 @@
+from unicodedata import category
+
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline
 from django.contrib.auth.models import Group
+from django.utils.safestring import mark_safe
 
-from apps.models import Car, User, CarBrand, CarCategory, Feature, CarImage, CarPrice, CarFeature
+from apps.models import (Car, CarBrand, CarCategory, CarFeature, CarImage,
+                         CarPrice, Feature, User)
 from apps.models.cars import CarColor
 from apps.models.news import New
+from root.settings import MEDIA_URL
 
 
 class CarImageStackedInline(StackedInline):
     model = CarImage
     extra = 1
-    max_num = 8
-    min_num = 1
 
-@admin.register(User)
-class UserAdmin(ModelAdmin):
-    list_display = 'id', 'phone',
+
 
 @admin.register(Car)
 class CarAdminModel(ModelAdmin):
-    list_display = 'model', 'brand','category','daily_price','deposit','transmission_type','fuel_type','is_available'
+    inlines = [CarImageStackedInline]
+    list_display = 'model', 'brand','category','daily_price','deposit','transmission_type','fuel_type','is_available',"car_image"
     list_filter = 'model','brand','category'
-
+    readonly_fields = ['car_image']
+    list_select_related = 'brand','category','color'
 
     def daily_price(self, obj):
         price = CarPrice.objects.filter(car=obj.id).first()
         return price.daily_price if price else "_"
-    daily_price.short_description = 'Daily price'
+
+
+
+    def car_image(self,obj):
+        photos = CarImage.objects.filter(car_id = obj.id)
+        if photos.exists():
+            imgs = "".join([f'<img src="{photo.image.url}" width="50" height="50" style="margin:2px;" />' for photo in photos])
+        else:
+            imgs = f'<img src="/media/car/noimage.png" width="50" height="50" style="margin:2px;" />'
+        return mark_safe(imgs)
+
+
+@admin.register(User)
+class UserAdmin(ModelAdmin):
+    list_display = 'id', 'phone',
 
 
 @admin.register(CarBrand)
