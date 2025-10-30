@@ -13,8 +13,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# Application definition
-
 INSTALLED_APPS = (
     'jazzmin',
     'django.contrib.admin',
@@ -65,8 +63,6 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'apps.User'
 WSGI_APPLICATION = 'root.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -155,14 +151,15 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_CUSTOMIZE_CSS': '/static/css/swagger_dark.css',
     'TITLE': 'Your Project API',
     'DESCRIPTION': 'Your project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
     'SWAGGER_UI_SETTINGS': {
-        'defaultModelsExpandDepth': -1
-    }
+        'defaultModelsExpandDepth': -1,
+    },
 }
 
 PASSWORD_HASHERS = [

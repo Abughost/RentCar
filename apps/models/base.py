@@ -29,3 +29,7 @@ class IsAdminOrReadOnly(BasePermission):
             return True
         else:
             return request.user.is_superuser
+
+class IsRegisteredUser(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_registered

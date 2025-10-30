@@ -1,15 +1,12 @@
-from unicodedata import category
-
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline
 from django.contrib.auth.models import Group
 from django.utils.safestring import mark_safe
 
 from apps.models import (Car, CarBrand, CarCategory, CarFeature, CarImage,
-                         CarPrice, Feature, User)
+                         CarPrice, Feature, User, UserProfile)
 from apps.models.cars import CarColor
 from apps.models.news import New
-from root.settings import MEDIA_URL
 
 
 class CarImageStackedInline(StackedInline):
@@ -20,11 +17,11 @@ class CarImageStackedInline(StackedInline):
 
 @admin.register(Car)
 class CarAdminModel(ModelAdmin):
-    inlines = [CarImageStackedInline]
     list_display = 'model', 'brand','category','daily_price','deposit','transmission_type','fuel_type','is_available',"car_image"
     list_filter = 'model','brand','category'
     readonly_fields = ['car_image']
     list_select_related = 'brand','category','color'
+    inlines = [CarImageStackedInline,]
 
     def daily_price(self, obj):
         price = CarPrice.objects.filter(car=obj.id).first()
@@ -43,7 +40,11 @@ class CarAdminModel(ModelAdmin):
 
 @admin.register(User)
 class UserAdmin(ModelAdmin):
-    list_display = 'id', 'phone',
+    list_display = 'id', 'phone','role'
+
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = 'id','user_id','first_name'
 
 
 @admin.register(CarBrand)
@@ -78,8 +79,3 @@ class CarFeatureModelAdmin(ModelAdmin):
 @admin.register(New)
 class NewModelAdmin(ModelAdmin):
     list_display = 'id','title'
-
-#
-#
-#
-# admin.site.unregister(Group)
