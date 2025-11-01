@@ -8,7 +8,7 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
                                      RetrieveUpdateDestroyAPIView,
                                      UpdateAPIView)
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -20,7 +20,7 @@ from apps.serializers import (CarBrandModelSerializer,
                               CarCategoryModelSerializer, CarModelSerializer,
                               LoginSerializer, RentModelSerializer,
                               SendCodeSerializer, VerifiedUserModelSerializer,
-                              VerifyCodeSerializer)
+                              VerifyCodeSerializer, NewsModelSerializer)
 from apps.utils import send_code
 
 
@@ -82,6 +82,14 @@ class RentCarRetrieveAPIView(RetrieveAPIView):
     serializer_class = RentModelSerializer
     permission_classes = [IsAuthenticated, IsRegisteredUser]
 
+@extend_schema(tags=['News'])
+class NewsListCreateAPIView(ListCreateAPIView):
+    serializer_class = NewsModelSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+class NewsRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = NewsModelSerializer
+    permission_classes = [IsAuthenticated,IsAdminOrReadOnly]
 
 class SendCodeAPIView(APIView):
     serializer_class = SendCodeSerializer
@@ -89,9 +97,9 @@ class SendCodeAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        phone = request.data['phone']
-        code = randint(100_000, 999_999)
-        valid, _ttl = send_code(phone, code, request.data)
+        data = request.data | serializer.validated_data['contact']
+
+        valid, _ttl = send_code(data)
         if valid:
             return Response({'message': "sms code sent"})
         return Response({'message':f'You have {_ttl} seconds left'})

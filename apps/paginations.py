@@ -11,7 +11,7 @@ class CustomCursorPagination(CursorPagination):
         # total = self.
 
         return Response({
-            'total page': total,
+            # 'total page': total,
             'next page': self.get_next_link(),
             'previous page' : self.get_previous_link(),
             "data" :data,
