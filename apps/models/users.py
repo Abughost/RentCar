@@ -9,6 +9,7 @@ from rest_framework.exceptions import ValidationError
 
 from apps.models.base import UUIDBaseModel
 from apps.models.managers import CustomUserManager
+from apps.utils import normalize_phone
 
 
 class User(AbstractUser, UUIDBaseModel):
@@ -19,30 +20,21 @@ class User(AbstractUser, UUIDBaseModel):
         MODERATOR = 'moderator','Moderator'
 
     role = CharField(max_length=15, choices=UserRole.choices,  default=UserRole.USER)
-    phone = CharField(max_length=20, unique=True)
+    contact = CharField(max_length=255, unique=True)
     is_registered = BooleanField(default=False,editable=False)
-    USERNAME_FIELD = 'phone'
 
+    USERNAME_FIELD = 'contact'
+    REQUIRED_FIELDS = []
 
     username = None
     email = None
-    REQUIRED_FIELDS = []
     objects = CustomUserManager()
 
     class Meta:
         verbose_name = 'Verified user'
         verbose_name_plural = 'Verified users'
 
-    def check_phone(self):
-        digits = re.findall(r'\d', self.phone)
-        if len(digits) < 9:
-            raise ValidationError('Phone number must be at least 9 digits')
-        phone = ''.join(digits)
-        self.phone = phone.removeprefix('998')
-
     def save(self, *, force_insert=False, force_update=False, using=None, update_fields=None):
-        self.check_phone()
-
         if self.is_superuser:
             self.role = self.UserRole.ADMIN
 
@@ -70,7 +62,11 @@ class UserProfile(UUIDBaseModel):
 
     def save(self, *, force_insert=False, force_update=False, using=None, update_fields=None):
         self.user.is_registered = True
+        self.user.save(update_fields=['is_registered'])
         super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 
 

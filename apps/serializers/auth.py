@@ -1,39 +1,52 @@
 from typing import Any
 
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import validate_email
 from rest_framework.exceptions import ValidationError
+
 from rest_framework.fields import CharField, IntegerField
 from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.serializers import PasswordField
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.models import User
-from apps.serializers import UserModelSerializer
-from apps.utils import normalize_phone, check_phone
+from apps.serializers.user import UserModelSerializer
+from apps.utils import check_contact, normalize_phone, find_contact_type
 
 
 class SendCodeSerializer(Serializer):
-    phone = CharField(default='901001010')
+    contact = CharField(help_text="User email or phone number for verification",
+                        label="Email or Phone",
+                        default='901001010')
+
     first_name = CharField(max_length=255,default='Alijon')
     last_name = CharField(max_length=255,default='Valiyev')
     password = PasswordField(max_length=255)
 
-    def validate_phone(self, value):
-        normalize_phone(value)
+    def validate_contact(self,contact):
+        return find_contact_type(contact)
 
 class VerifyCodeSerializer(Serializer):
-    phone = CharField(default='901001010')
+    contact = CharField(help_text="User email or phone number for verification",
+                        label="Email or Phone",
+                        default='901001010')
     code = IntegerField()
 
-    def validate_phone(self, value):
-        return normalize_phone(value)
+    def validate_contact(self, contact):
+        try:
+            validate_email(contact)
+            return {'type':'email','value':contact}
+        except DjangoValidationError:
+            pass
+
+        return {'type':'phone','value': normalize_phone(contact) }
 
     def validate(self, attrs: dict[str, Any]) -> dict[Any, Any]:
-        is_valid, data = check_phone(**attrs)
+        is_valid, data = check_contact(**attrs)
         if not is_valid:
             raise ValidationError({'message': 'invalid or expired code'})
-        phone = attrs['phone']
-        user, _ = User.objects.get_or_create(phone=phone,
+        user, _ = User.objects.get_or_create(contact=attrs['contact']['value'],
                                                   first_name=data['first_name'],
                                                   last_name=data['last_name'],
                                                   password=make_password(data['password']))
@@ -42,7 +55,7 @@ class VerifyCodeSerializer(Serializer):
         return attrs
 
 class LoginSerializer(Serializer):
-    phone = CharField(max_length=255,default='901001010')
+    contact = CharField(max_length=255,default='901001010')
     password = CharField(max_length=50)
     token_class = RefreshToken
     user = None
@@ -52,15 +65,15 @@ class LoginSerializer(Serializer):
         "no_active_account": "No active account found with the given credentials"
     }
 
-    def validate_phone(self,value):
-        return normalize_phone(value)
+    def validate_contact(self,contact):
+        return find_contact_type(contact)
 
     def validate(self, attrs):
-        phone = attrs['phone']
+        contact = attrs['contact']['value']
         password = attrs['password']
 
         try:
-            self.user = User.objects.get(phone=phone)
+            self.user = User.objects.get(contact=contact)
         except User.DoesNotExist:
             return ValidationError(self.default_error_messages)
 

@@ -1,10 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline
-from django.contrib.auth.models import Group
 from django.utils.safestring import mark_safe
 
 from apps.models import (Car, CarBrand, CarCategory, CarFeature, CarImage,
-                         CarPrice, Feature, User, UserProfile)
+                         CarPrice, Feature, User, UserProfile, Rental)
 from apps.models.cars import CarColor
 from apps.models.news import New
 
@@ -39,24 +38,25 @@ class CarAdminModel(ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(ModelAdmin):
-    list_display = 'id', 'phone','role'
+class UserModelAdmin(ModelAdmin):
+    list_display = 'id', 'contact','role'
+
 
 @admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
+class UserProfileModelAdmin(admin.ModelAdmin):
     list_display = 'id','user_id','first_name'
 
 
 @admin.register(CarBrand)
-class CarBrandAdminModel(ModelAdmin):
+class CarBrandModelAdmin(ModelAdmin):
     list_display = 'name',
 
 @admin.register(CarColor)
-class CarColorAdminModel(ModelAdmin):
+class CarColorModelAdmin(ModelAdmin):
     list_display = 'name',
 
 @admin.register(CarCategory)
-class CarTypeAdminModel(ModelAdmin):
+class CarTypeModelAdmin(ModelAdmin):
     list_display = 'name',
 
 @admin.register(Feature)
@@ -79,3 +79,7 @@ class CarFeatureModelAdmin(ModelAdmin):
 @admin.register(New)
 class NewModelAdmin(ModelAdmin):
     list_display = 'id','title'
+
+@admin.register(Rental)
+class RentalModelAdmin(admin.ModelAdmin):
+    list_display = 'id',

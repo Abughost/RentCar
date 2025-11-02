@@ -1,8 +1,7 @@
-from rest_framework.fields import (SerializerMethodField)
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import CharField, ModelSerializer
 
-from apps.models import (Car, CarBrand, CarCategory, CarImage, CarPrice,
-                         Feature)
+from apps.models import Car, CarBrand, CarCategory, CarImage, CarPrice, Feature
 
 
 class CarPriceModelSerializer(ModelSerializer):
@@ -43,7 +42,7 @@ class CarModelSerializer(ModelSerializer):
         model = Car
         fields = 'id', "model", 'daily_price', 'deposit', 'limit_km', 'features'
 
-    def get_daily_price(self, obj):
+    def get_daily_price(self, obj) -> int:
         price = CarPrice.objects.filter(car=obj.id).first()
         return price.daily_price if price else None
 

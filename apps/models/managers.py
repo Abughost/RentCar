@@ -4,20 +4,21 @@ from django.contrib.auth.models import UserManager
 
 class CustomUserManager(UserManager):
 
-    def _create_user_object(self, phone, password, **extra_fields):
-        user = self.model(phone=phone, **extra_fields)
+    def _create_user_object(self, contact, password, **extra_fields):
+        user = self.model(contact
+                          =contact, **extra_fields)
         user.password = make_password(password)
         return user
 
 
-    def _create_user(self,phone, password, **extra_fields):
+    def _create_user(self,contact, password, **extra_fields):
 
-        user = self._create_user_object(phone, password, **extra_fields)
+        user = self._create_user_object(contact, password, **extra_fields)
         user.save(using=self._db)
         user.set_unusable_password()
         return user
 
-    def create_superuser(self, phone, password=None, **extra_fields):
+    def create_superuser(self, contact, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -26,6 +27,6 @@ class CustomUserManager(UserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(phone, password, **extra_fields)
+        return self._create_user(contact, password, **extra_fields)
 
     create_superuser.alters_data = True

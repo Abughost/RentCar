@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -150,6 +151,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
 }
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=360),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+}
+
 SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_CUSTOMIZE_CSS': '/static/css/swagger_dark.css',
     'TITLE': 'Your Project API',
@@ -245,7 +252,7 @@ JAZZMIN_SETTINGS = {
     "show_sidebar": True,
 
     # Whether to aut expand the menu
-    "navigation_expanded": True,
+    "navigation_expanded": False,
 
     # Hide these apps when generating side menu e.g (auth)
     "hide_apps": [],
