@@ -87,7 +87,6 @@ static
 !**/migrations/__init__.py
 .cache
 .parcel-cache
-media
 .next
 out
 .nuxt
