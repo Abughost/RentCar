@@ -16,7 +16,6 @@ router.register('news',NewsModelViewSet,basename='news')
 router.register('cars',CarModelViewSet,basename='cars')
 
 urlpatterns = [
-    path('',include(router.urls)),
 
     #auth
     path('auth/send-code', SendCodeAPIView.as_view(), name='send_code'),
@@ -33,6 +32,7 @@ urlpatterns = [
     path('cars/brand/<str:name>', CarBrandUpdateDestroyAPIView.as_view(), name='car_brand_detail'),
     path('cars/category', CarTypeListCreateAPIView.as_view(), name='car_category'),
     path('cars/category/<str:name>', CarCategoryRetrieveUpdateDestroyAPIView.as_view(), name='car_category_detail'),
-    path('rentals/history',RentCarHistoryListAPIView.as_view(),name='rents_history')
+    path('rentals/history',RentCarHistoryListAPIView.as_view(),name='rents_history'),
 
+    path('', include(router.urls)),
 ]
