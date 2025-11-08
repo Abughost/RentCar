@@ -1,5 +1,4 @@
-from random import randint
-
+from django.contrib.auth import logout
 from django.core.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
@@ -7,7 +6,6 @@ from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
-                                     RetrieveUpdateDestroyAPIView,
                                      UpdateAPIView, ListAPIView)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -24,7 +22,6 @@ from apps.serializers import (CarBrandModelSerializer,
                               LoginSerializer, RentModelSerializer,
                               SendCodeSerializer, VerifiedUserModelSerializer,
                               VerifyCodeSerializer, NewsModelSerializer)
-from apps.serializers.cars import CarDetailModelSerializer
 from apps.utils import send_code
 
 
@@ -110,7 +107,6 @@ class NewsListCreateAPIView(ListCreateAPIView):
     queryset = New.objects.all()
     serializer_class = NewsModelSerializer
     permission_classes = [IsAdminOrReadOnly]
-
 @extend_schema(tags=['News'])
 class NewsModelViewSet(ModelViewSet):
     queryset = New.objects.all()
@@ -125,6 +121,7 @@ class SendCodeAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = request.data | serializer.validated_data['contact']
+
 
         valid, _ttl = send_code(data)
         if valid:
@@ -150,3 +147,14 @@ class LoginAPIView(APIView):
 
         return Response(serializer.get_data())
 
+
+class LogoutAPIView(APIView):
+    def post(self,request):
+        logout(self.request)
+        return Response({'message':'User logged out successfully'})
+
+class CheckUserLogin(APIView):
+    def get(self,request):
+        if self.request.user.is_authenticated:
+            return Response({'login': True})
+        return Response({'Logout':False})

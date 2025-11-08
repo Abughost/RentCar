@@ -115,6 +115,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+EMAIL_HOST = 'smtp.google.com'
+EMAIL_PORT = 578
+EMAIL_HOST_USER = 'sarvarbekjetbrains@gmail.com'
+EMAIL_HOST_PASSWORD = 'vagc xter qcuk nvuw'
+EMAIL_USE_TLS = True
+
 # STORAGES = {
 #     "default": {
 #         "BACKEND": "storages.backends.s3.S3Storage",

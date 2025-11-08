@@ -25,7 +25,11 @@ class SendCodeSerializer(Serializer):
     password = PasswordField(max_length=255)
 
     def validate_contact(self,contact):
-        return find_contact_type(contact)
+        contact_data = find_contact_type(contact)
+        user = User.objects.filter(contact=contact_data['value'])
+        if user:
+            raise ValidationError({'message': 'user already exist'})
+        return contact_data
 
 class VerifyCodeSerializer(Serializer):
     contact = CharField(help_text="User email or phone number for verification",
