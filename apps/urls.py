@@ -22,7 +22,7 @@ urlpatterns = [
     path('auth/verify-code', VerifyCodeAPIView.as_view(), name='verify_code'),
     path('auth/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/login',LoginAPIView.as_view(),name='login'),
-    path('auth/logout',LogoutAPIView.as_view(),name='logout'),
+    # path('auth/logout',LogoutAPIView.as_view(),name='logout'),
     path('auth/user/status',CheckUserLogin.as_view(),name='checking'),
     path('auth/register', UserProfileCreateAPIView.as_view(), name='user_profile'),
 
