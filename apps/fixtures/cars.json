@@ -14,7 +14,8 @@
         "limit_km": 300,
         "fuel_type": "gas",
         "transmission_type": "automatic",
-        "is_available": true
+        "is_available": true,
+        "author": "5bc76fd0-e639-419e-9b88-29e4938e43b4"
     }
 },
 {
@@ -32,7 +33,8 @@
         "limit_km": 300,
         "fuel_type": "gas",
         "transmission_type": "automatic",
-        "is_available": true
+        "is_available": true,
+        "author": "5bc76fd0-e639-419e-9b88-29e4938e43b4"
     }
 },
 {
@@ -50,7 +52,8 @@
         "limit_km": 300,
         "fuel_type": "gas",
         "transmission_type": "automatic",
-        "is_available": true
+        "is_available": true,
+        "author": "5bc76fd0-e639-419e-9b88-29e4938e43b4"
     }
 },
 {
@@ -68,7 +71,8 @@
         "limit_km": 300,
         "fuel_type": "gas",
         "transmission_type": "automatic",
-        "is_available": true
+        "is_available": true,
+        "author": "5bc76fd0-e639-419e-9b88-29e4938e43b4"
     }
 },
 {
@@ -86,7 +90,8 @@
         "limit_km": 300,
         "fuel_type": "gas",
         "transmission_type": "manual",
-        "is_available": true
+        "is_available": true,
+        "author": "5bc76fd0-e639-419e-9b88-29e4938e43b4"
     }
 }
 ]

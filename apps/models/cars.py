@@ -57,6 +57,7 @@ class Car(CreatedBaseModel):
     transmission_type = CharField(max_length=15, choices=TransmissionType.choices, default=TransmissionType.AUTOMATIC)
     features = ManyToManyField('apps.Feature',through='apps.CarFeature')
     is_available = BooleanField(default=True)
+    author = ForeignKey('User', CASCADE, related_name='author')
 
     def __str__(self):
         return self.model

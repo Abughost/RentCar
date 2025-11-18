@@ -8,8 +8,8 @@ from apps.views import (CarBrandListCreateAPIView,
                         CarModelViewSet,
                         CarTypeListCreateAPIView, LoginAPIView,
                         RentCarListCreateApiView, RentCarRetrieveDestroyAPIView,
-                        SendCodeAPIView, UserProfileCreateAPIView, VerifyCodeAPIView, NewsListCreateAPIView,
-                        NewsModelViewSet, RentCarHistoryListAPIView, LogoutAPIView, CheckUserLogin)
+                        SendCodeAPIView, UserProfileCreateAPIView, VerifyCodeAPIView, NewsModelViewSet,
+                        RentCarHistoryListAPIView, CheckUserLogin)
 
 router = DefaultRouter(trailing_slash=False)
 router.register('news',NewsModelViewSet,basename='news')
@@ -22,10 +22,8 @@ urlpatterns = [
     path('auth/verify-code', VerifyCodeAPIView.as_view(), name='verify_code'),
     path('auth/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/login',LoginAPIView.as_view(),name='login'),
-    # path('auth/logout',LogoutAPIView.as_view(),name='logout'),
     path('auth/user/status',CheckUserLogin.as_view(),name='checking'),
     path('auth/register', UserProfileCreateAPIView.as_view(), name='user_profile'),
-
     path('user/rentals', RentCarListCreateApiView.as_view(), name='rent_car'),
     path('user/rentals/<uuid:pk>', RentCarRetrieveDestroyAPIView.as_view(), name='rent_user_cars'),
     path('cars/brand',CarBrandListCreateAPIView.as_view(), name='car_detail'),

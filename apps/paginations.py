@@ -8,11 +8,8 @@ class CustomCursorPagination(CursorPagination):
     ordering = '-created_at'
 
     def get_paginated_response(self, data):
-        # total = self.
-
         return Response({
-            # 'total page': total,
-            'next page': self.get_next_link(),
-            'previous page' : self.get_previous_link(),
+            'next_page': self.get_next_link(),
+            'previous_page' : self.get_previous_link(),
             "data" :data,
         })

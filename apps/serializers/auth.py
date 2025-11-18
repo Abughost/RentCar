@@ -3,9 +3,11 @@ from typing import Any
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.validators import validate_email
+from rest_framework import status
 from rest_framework.exceptions import ValidationError
 
 from rest_framework.fields import CharField, IntegerField
+from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.serializers import PasswordField
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -50,10 +52,17 @@ class VerifyCodeSerializer(Serializer):
         is_valid, data = check_contact(**attrs)
         if not is_valid:
             raise ValidationError({'message': 'invalid or expired code'})
-        user, _ = User.objects.get_or_create(contact=attrs['contact']['value'],
-                                                  first_name=data['first_name'],
-                                                  last_name=data['last_name'],
-                                                  password=make_password(data['password']))
+
+        user, _ = User.objects.get_or_create(
+            contact=attrs['contact']['value'],
+            defaults={
+                  'first_name' : data['first_name'],
+                  'last_name' : data['last_name'],
+                  'password' : make_password(data['password'])
+                    }
+        )
+
+
 
         attrs['user'] = UserModelSerializer(user).data
         return attrs
