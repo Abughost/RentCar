@@ -64,7 +64,6 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'apps.User'
 WSGI_APPLICATION = 'root.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -156,7 +155,6 @@ REST_FRAMEWORK = {
     'DEFAULT_FILE_STORAGE': "minio_storage.storage.MinioMediaStorage",
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
 }
-
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=360),

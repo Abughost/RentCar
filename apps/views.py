@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError, PermissionDenied
+from django.core.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status
@@ -19,8 +19,7 @@ from apps.serializers import (CarBrandModelSerializer,
                               CarCategoryModelSerializer, CarModelSerializer,
                               LoginSerializer, RentModelSerializer,
                               SendCodeSerializer, VerifiedUserModelSerializer,
-                              VerifyCodeSerializer, NewsModelSerializer)
-from apps.serializers.cars import CarDetailModelSerializer
+                              VerifyCodeSerializer, NewsModelSerializer, CarDetailModelSerializer)
 from apps.utils import send_code
 
 
@@ -28,26 +27,25 @@ from apps.utils import send_code
                     retrieve=extend_schema(auth=[]))
 @extend_schema(tags=['Cars'])
 class CarModelViewSet(ModelViewSet):
+    queryset = Car.objects.filter(is_available=True)
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = CarPriceFilter
     search_fields = 'brand_name', 'model'
-    permission_classes = [IsAdminOrReadOnly,]
+    permission_classes = [IsAdminOrReadOnly, ]
     pagination_class = CustomCursorPagination
-
-    def get_queryset(self):
-        return Car.objects.filter(is_available=True)
 
     def get_serializer_class(self):
         if self.action == 'list':
             return CarModelSerializer
         return CarDetailModelSerializer
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        if not user.is_staff or user.role != 'moderator':
-            raise PermissionDenied('Only admin or moderator can be an author')
+    # def perform_create(self, serializer):
+    #     user = self.request.user
+    #     if not user.is_staff or user.role != 'moderator':
+    #         raise PermissionDenied('Only admin or moderator can be an author')
+    #
+    #     serializer.save(author=user)
 
-        serializer.save(author=user)
 
 @extend_schema_view(get=extend_schema(auth=[]))
 @extend_schema(tags=['Car Brand & Categories'])
@@ -63,6 +61,7 @@ class CarBrandUpdateDestroyAPIView(UpdateAPIView, DestroyAPIView):
     serializer_class = CarBrandModelSerializer
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     lookup_field = 'name'
+
 
 @extend_schema_view(get=extend_schema(auth=[]))
 @extend_schema(tags=['Car Brand & Categories'])
@@ -149,7 +148,8 @@ class VerifyCodeAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         validate_data = serializer.validated_data
 
-        return Response({"message": "successfully login", "data": {'user':validate_data['user']}}, status=status.HTTP_201_CREATED)
+        return Response({"message": "successfully login", "data": {'user': validate_data['user']}},
+                        status=status.HTTP_201_CREATED)
 
 
 class LoginAPIView(APIView):
@@ -160,7 +160,6 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.get_data())
-
 
 
 class CheckUserLogin(APIView):

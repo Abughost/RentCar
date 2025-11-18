@@ -5,8 +5,7 @@ from django.contrib.auth.models import UserManager
 class CustomUserManager(UserManager):
 
     def _create_user_object(self, contact, password, **extra_fields):
-        user = self.model(contact
-                          =contact, **extra_fields)
+        user = self.model(contact=contact, **extra_fields)
         user.password = make_password(password)
         return user
 
@@ -29,4 +28,3 @@ class CustomUserManager(UserManager):
 
         return self._create_user(contact, password, **extra_fields)
 
-    create_superuser.alters_data = True

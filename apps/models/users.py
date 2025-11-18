@@ -1,27 +1,21 @@
-import re
-
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db.models import (CASCADE, BooleanField, DateField, OneToOneField,
                               TextChoices)
 from django.db.models.fields import CharField
-from rest_framework.exceptions import ValidationError
 
 from apps.models.base import UUIDBaseModel
 from apps.models.managers import CustomUserManager
-from apps.utils import normalize_phone
 
 
 class User(AbstractUser, UUIDBaseModel):
-
     class UserRole(TextChoices):
-        ADMIN = 'admin','Admin',
-        USER = 'user' , 'User',
-        MODERATOR = 'moderator','Moderator'
+        ADMIN = 'admin', 'Admin',
+        USER = 'user', 'User',
+        MODERATOR = 'moderator', 'Moderator'
 
-    role = CharField(max_length=15, choices=UserRole.choices,  default=UserRole.USER)
+    role = CharField(max_length=15, choices=UserRole.choices, default=UserRole.USER)
     contact = CharField(max_length=255, unique=True)
-    is_registered = BooleanField(default=False,editable=False)
+    is_registered = BooleanField(default=False, editable=False)
 
     USERNAME_FIELD = 'contact'
     REQUIRED_FIELDS = []
@@ -67,7 +61,3 @@ class UserProfile(UUIDBaseModel):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
-
-
-
-

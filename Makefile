@@ -13,3 +13,8 @@ dbshell:
 
 loaddata:
 	python3 manage.py loaddata carbrand carcategory carcolor carfeature carprice cars feature
+
+PHONE := $(word 2, $(MAKECMDGOALS))
+
+admin:
+	python3 manage.py createsuperuser --contact $(PHONE)

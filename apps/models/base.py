@@ -1,3 +1,5 @@
+import uuid
+
 from django.db.models import Func, Model
 from django.db.models.fields import DateTimeField, UUIDField
 
@@ -9,7 +11,7 @@ class GenRandomUUID(Func):
 
 
 class UUIDBaseModel(Model):
-    id = UUIDField(primary_key=True, db_default=GenRandomUUID(), editable=False)
+    id = UUIDField(primary_key=True, db_default=GenRandomUUID(), default=uuid.uuid4(), editable=False)
 
     class Meta:
         abstract = True

@@ -1,4 +1,4 @@
-from rest_framework.fields import SerializerMethodField
+from rest_framework.fields import SerializerMethodField, HiddenField, CurrentUserDefault
 from rest_framework.serializers import CharField, ModelSerializer
 
 from apps.models import Car, CarBrand, CarCategory, CarImage, CarPrice, Feature
@@ -37,6 +37,7 @@ class CarImageModelSerializer(ModelSerializer):
 class CarModelSerializer(ModelSerializer):
     daily_price = SerializerMethodField()
     features = CarFeatureModelSerializer(many=True)
+    author = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = Car
@@ -46,12 +47,14 @@ class CarModelSerializer(ModelSerializer):
         price = CarPrice.objects.filter(car=obj.id).first()
         return price.daily_price if price else None
 
+
 class CarDetailModelSerializer(ModelSerializer):
     brand = CharField(source='brand.name')
     prices = CarPriceModelSerializer(many=True, source='price')
     features = CarFeatureModelSerializer(many=True)
     images = CarImageModelSerializer(many=True)
     similar_cars = SerializerMethodField()
+    author = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = Car
@@ -61,5 +64,3 @@ class CarDetailModelSerializer(ModelSerializer):
     def get_similar_cars(self, obj):
         similar = Car.objects.filter(category=obj.category).exclude(id=obj.id)[:4]
         return CarModelSerializer(similar, many=True).data
-
-
