@@ -149,7 +149,7 @@ class VerifyCodeAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         validate_data = serializer.validated_data
 
-        return Response({"message": "successfully login", "data": validate_data}, status=status.HTTP_201_CREATED)
+        return Response({"message": "successfully login", "data": {'user':validate_data['user']}}, status=status.HTTP_201_CREATED)
 
 
 class LoginAPIView(APIView):

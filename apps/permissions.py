@@ -1,4 +1,6 @@
+from django.core.exceptions import ValidationError
 from rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import BasePermission
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -13,8 +15,9 @@ class IsAdminOrReadOnly(BasePermission):
 
 class IsRegisteredUser(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_active and request.user.is_registered
-
+        if request.user.is_active and request.user.is_registered:
+            return True
+        raise PermissionDenied('You need to register first to rent the car')
 
 class IsGetOrLocked(BaseAuthentication):
 
