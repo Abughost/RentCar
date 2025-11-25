@@ -18,3 +18,7 @@ PHONE := $(word 2, $(MAKECMDGOALS))
 
 admin:
 	python3 manage.py createsuperuser --contact $(PHONE)
+
+check:
+	flake8 .
+	isort .

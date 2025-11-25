@@ -28,17 +28,6 @@ class User(AbstractUser, UUIDBaseModel):
         verbose_name = 'Verified user'
         verbose_name_plural = 'Verified users'
 
-    # def save(self, *, force_insert=False, force_update=False, using=None, update_fields=None):
-    #     if self.is_superuser:
-    #         self.role = self.UserRole.ADMIN
-    #
-    #     if self.pk:
-    #         old = User.objects.filter(pk = self.pk).first()
-    #         if old and self.password != old.password :
-    #             self.password = make_password(self.password)
-    #
-    #     super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
-
 
 class UserProfile(UUIDBaseModel):
     user = OneToOneField('apps.User', CASCADE, related_name='profile')
@@ -61,3 +50,4 @@ class UserProfile(UUIDBaseModel):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
+

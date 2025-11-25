@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import BasePermission
@@ -10,7 +9,7 @@ class IsAdminOrReadOnly(BasePermission):
         if request.method == 'GET':
             return True
         else:
-            return request.user.is_superuser
+            return request.user.is_superuser or request.user.role == 'moderator'
 
 
 class IsRegisteredUser(BasePermission):
@@ -18,6 +17,7 @@ class IsRegisteredUser(BasePermission):
         if request.user.is_active and request.user.is_registered:
             return True
         raise PermissionDenied('You need to register first to rent the car')
+
 
 class IsGetOrLocked(BaseAuthentication):
 

@@ -16,11 +16,12 @@ from root.settings import EMAIL_HOST_USER
 def get_login_data(value):
     return f"login:{value}"
 
+
 def send_code(data, expired_time=360):
     redis = Redis.from_url(settings.CACHES['default']['LOCATION'])
     _contact = get_login_data(data['value'])
     _ttl = redis.ttl(f':1:{_contact}')
-    code = randint(100_000,999_999)
+    code = randint(100_000, 999_999)
 
     if _ttl > 0:
         return False, _ttl
@@ -28,19 +29,20 @@ def send_code(data, expired_time=360):
     print('send code start ')
     if data['type'] == 'email':
         print('email sending')
-        send_email(data['value'],code)
+        send_email(data['value'], code)
     else:
         print(f'{data['type']}: {data['value']} == Code: {code}')
 
     _data = {
-        'code':code,
-        'type':data['type'],
-        'first_name':data['first_name'],
-        'last_name':data['last_name'],
-        'password':data['password']
+        'code': code,
+        'type': data['type'],
+        'first_name': data['first_name'],
+        'last_name': data['last_name'],
+        'password': data['password']
     }
     cache.set(_contact, _data, expired_time)
     return True, 0
+
 
 def check_contact(contact: str, code: int):
     _contact = get_login_data(contact['value'])
@@ -48,6 +50,7 @@ def check_contact(contact: str, code: int):
     if _data is None:
         raise ValidationError('Invalid email or phone number', status.HTTP_404_NOT_FOUND)
     return _data['code'] == code , _data
+
 
 def normalize_phone(value):
     digits = re.findall(r'\d', value)
@@ -58,6 +61,7 @@ def normalize_phone(value):
         phone = phone.removeprefix('998')
     return phone
 
+
 def find_contact_type(contact):
     try:
         validate_email(contact)
@@ -67,13 +71,14 @@ def find_contact_type(contact):
 
     try:
         normalize_phone(contact)
-        return {'type': 'phone', 'value': contact}
+        return {'type' : 'phone', 'value' : contact}
     except ValidationError:
         pass
 
-    raise ValidationError({'message': 'contact must be phone number or email'})
+    raise ValidationError({'message' : 'contact must be phone number or email'})
 
-def send_email(email:str, code:int):
+
+def send_email(email: str, code: int):
     subject = 'Hello world'
     message = f'please confirm the code {code}'
-    send_mail(subject,message,EMAIL_HOST_USER,[email])
+    send_mail(subject, message, EMAIL_HOST_USER, [email])

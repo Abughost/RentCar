@@ -11,7 +11,10 @@ class GenRandomUUID(Func):
 
 
 class UUIDBaseModel(Model):
-    id = UUIDField(primary_key=True, db_default=GenRandomUUID(), default=uuid.uuid4(), editable=False)
+    id = UUIDField(primary_key=True,
+                   db_default=GenRandomUUID(),
+                   default=uuid.uuid4(),
+                   editable=False)
 
     class Meta:
         abstract = True

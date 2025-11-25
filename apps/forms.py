@@ -1,9 +1,12 @@
+from django.forms import ClearableFileInput
 from django.forms.models import ModelForm
 
-from apps.models import User
+from apps.models import CarImage
 
 
-class CustomUserForm(ModelForm):
+class CarImageForm(ModelForm):
     class Meta:
-        model = User
+        model = CarImage
         fields = '__all__'
+        widgets = {
+            'image': ClearableFileInput(attrs={'class': 'dropzone'})}

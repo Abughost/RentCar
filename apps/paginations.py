@@ -10,6 +10,6 @@ class CustomCursorPagination(CursorPagination):
     def get_paginated_response(self, data):
         return Response({
             'next_page': self.get_next_link(),
-            'previous_page' : self.get_previous_link(),
-            "data" :data,
+            'previous_page': self.get_previous_link(),
+            "data": data,
         })

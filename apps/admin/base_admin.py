@@ -43,7 +43,7 @@ def get_app_list(self, request, app_label=None):
         'CarPrice': 'label2',
         'CarFeature': 'label2',
 
-        'Course': 'Rental',
+        'Rental': 'label2',
 
     }
 

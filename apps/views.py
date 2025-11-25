@@ -4,22 +4,25 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListCreateAPIView, RetrieveAPIView,
-                                     UpdateAPIView, ListAPIView)
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+                                     ListAPIView, ListCreateAPIView,
+                                     RetrieveAPIView, UpdateAPIView)
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from apps.filters import CarPriceFilter
-from apps.models import Car, CarBrand, CarCategory, UserProfile, Rental, New
+from apps.models import Car, CarBrand, CarCategory, New, Rental, UserProfile
 from apps.paginations import CustomCursorPagination
 from apps.permissions import IsAdminOrReadOnly, IsRegisteredUser
 from apps.serializers import (CarBrandModelSerializer,
-                              CarCategoryModelSerializer, CarModelSerializer,
-                              LoginSerializer, RentModelSerializer,
-                              SendCodeSerializer, VerifiedUserModelSerializer,
-                              VerifyCodeSerializer, NewsModelSerializer, CarDetailModelSerializer)
+                              CarCategoryModelSerializer,
+                              CarDetailModelSerializer, CarModelSerializer,
+                              LoginSerializer, NewsModelSerializer,
+                              RentModelSerializer, SendCodeSerializer,
+                              VerifiedUserModelSerializer,
+                              VerifyCodeSerializer)
 from apps.utils import send_code
 
 
@@ -38,13 +41,6 @@ class CarModelViewSet(ModelViewSet):
         if self.action == 'list':
             return CarModelSerializer
         return CarDetailModelSerializer
-
-    # def perform_create(self, serializer):
-    #     user = self.request.user
-    #     if not user.is_staff or user.role != 'moderator':
-    #         raise PermissionDenied('Only admin or moderator can be an author')
-    #
-    #     serializer.save(author=user)
 
 
 @extend_schema_view(get=extend_schema(auth=[]))
@@ -85,6 +81,7 @@ class UserProfileCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
+@extend_schema_view(get=extend_schema(auth=[]))
 @extend_schema(tags=['Rentals'])
 class RentCarListCreateApiView(ListCreateAPIView):
     queryset = Rental.objects.all()

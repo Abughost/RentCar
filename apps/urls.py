@@ -1,15 +1,15 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from apps.views import (CarBrandListCreateAPIView,
                         CarBrandUpdateDestroyAPIView,
                         CarCategoryRetrieveUpdateDestroyAPIView,
-                        CarModelViewSet,
-                        CarTypeListCreateAPIView, LoginAPIView,
-                        RentCarListCreateApiView, RentCarRetrieveDestroyAPIView,
-                        SendCodeAPIView, UserProfileCreateAPIView, VerifyCodeAPIView, NewsModelViewSet,
-                        RentCarHistoryListAPIView, CheckUserLogin)
+                        CarModelViewSet, CarTypeListCreateAPIView,
+                        CheckUserLogin, LoginAPIView, NewsModelViewSet,
+                        RentCarHistoryListAPIView, RentCarListCreateApiView,
+                        RentCarRetrieveDestroyAPIView, SendCodeAPIView,
+                        UserProfileCreateAPIView, VerifyCodeAPIView)
 
 router = DefaultRouter(trailing_slash=False)
 router.register('news', NewsModelViewSet, basename='news')

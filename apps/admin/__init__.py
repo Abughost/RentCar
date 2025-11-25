@@ -1,1 +1,1 @@
-from apps.admin import admin,base_admin
+from apps.admin import admin, base_admin
